@@ -39,7 +39,7 @@ const getApiData = async (apiLink) => {
 
 }
 
-//Show Fetched all data 
+//Show Fetched search data 
 const domDataShow = (mealLink) => {
     getApiData(mealLink).then(data => {
         mealsArea.textContent = ''
@@ -138,3 +138,32 @@ document.getElementById('viewCartList').addEventListener('click', () => {
         mealsIteamList.appendChild(createIteam)
     })
 })
+
+
+//Show Fetched search data 
+const defaultShow = () => {
+    getApiData(`https://www.themealdb.com/api/json/v1/1/search.php?s= `).then(data => {
+        mealsArea.textContent = ''
+        data.meals.forEach(element => {
+            const { idMeal, strMeal, strInstructions, strMealThumb } = element
+            const defaultsingleMealCol = document.createElement('div')
+            defaultsingleMealCol.classList.add('col')
+            defaultsingleMealCol.innerHTML = `
+                <div class="card">
+                    <img src="${strMealThumb}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">${strMeal}</h5>
+                        <p class="card-text">${strInstructions.slice(0, 100)}</p>
+                        <button onclick="singleMealApi('https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}')" class="btn btn-primary w-100" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                        aria-controls="offcanvasRight">
+                            Click For More Details
+                        </button>
+                    </div>
+                </div>
+                `
+            mealsArea.appendChild(defaultsingleMealCol)
+        })
+    })
+}
+
+defaultShow()
