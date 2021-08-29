@@ -7,7 +7,7 @@ const mealsCartCount = document.getElementById('mealsCartCount')
 let mealsCart = []
 // const singleMealDetails = document.getElementById('singleMealDetails')
 
-
+//Button with Text Lenth Verify
 document.getElementById('searchBtn').addEventListener('click', () => {
     if (searchInput.value.length == 0) {
         errorForWrongType.classList.remove('d-none')
@@ -19,6 +19,7 @@ document.getElementById('searchBtn').addEventListener('click', () => {
     searchInput.value = ''
 })
 
+//Create api link with input text
 const selectApi = (searchInputValue) => {
     if (searchInputValue.length > 1) {
         const mealByName = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchInputValue}`
@@ -30,6 +31,7 @@ const selectApi = (searchInputValue) => {
     }
 }
 
+//Fetch Data From Api
 const getApiData = async (apiLink) => {
     const res = await fetch(apiLink)
     const data = await res.json()
@@ -37,6 +39,7 @@ const getApiData = async (apiLink) => {
 
 }
 
+//Show Fetched all data 
 const domDataShow = (mealLink) => {
     getApiData(mealLink).then(data => {
         mealsArea.textContent = ''
@@ -62,10 +65,10 @@ const domDataShow = (mealLink) => {
     })
 }
 
+//Show Fetched Single data 
 const singleMealApi = (singleApiData) => {
     singleMealDetails.textContent = ''
     getApiData(singleApiData).then(data => {
-        console.log()
         const { idMeal, strMeal, strInstructions, strMealThumb, strCategory, strArea } = data.meals[0]
         const singleDetailsCard = document.createElement('div')
         singleDetailsCard.classList.add('card')
@@ -91,29 +94,42 @@ const singleMealApi = (singleApiData) => {
     })
 }
 
+//Add meals to Array
 const addToCartList = (product) => {
     getApiData(product).then(data => {
-        mealsCart.push(data.meals[0])
-        console.log(mealsCart)
+        const singelCardItem = data.meals[0]
+
+        const Checkitem = mealsCart.findIndex(x => x.idMeal == singelCardItem.idMeal);
+        if (Checkitem == -1) {
+            singelCardItem.quantity = 1
+            mealsCart.push(singelCardItem)
+        }
+        else {
+            mealsCart[Checkitem].quantity = mealsCart[Checkitem].quantity + 1
+        }
         mealsCartCount.innerText = mealsCart.length
     })
 
+
 }
 
+//Show Array Data
 document.getElementById('viewCartList').addEventListener('click', () => {
+    mealsIteamList.textContent = ''
     mealsCart.forEach(element => {
-        const { idMeal, strMeal, strInstructions, strMealThumb, strCategory, strArea } = element
+        const { idMeal, strMeal, strInstructions, strMealThumb, strCategory, strArea, quantity } = element
         const createIteam = document.createElement('div')
         createIteam.classList.add('card', 'mb-3', 'border-3', 'p-1', 'border-light')
         createIteam.innerHTML = `
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <img src="${strMealThumb}" width="100px" class="img-fluid rounded-circle">
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="card-body">
-                        <h5 class="card-title">${strMeal}</h5>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small>
+                        <h5 class="card-title">Item: ${strMeal}</h5>
+                        <h5 class="text-primary">Quantity: ${quantity}</h5>
+                        <p class="card-text"><small class="text-muted">Category: ${strCategory}, Area: ${strArea}</small>
                         </p>
                     </div>
                 </div>
