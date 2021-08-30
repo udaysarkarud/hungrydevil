@@ -4,6 +4,8 @@ const mealsArea = document.getElementById('mealsArea')
 const singleMealDetails = document.getElementById('singleMealDetails')
 const mealsIteamList = document.getElementById('mealsIteamList')
 const mealsCartCount = document.getElementById('mealsCartCount')
+const addedToCard = document.getElementById('addedToCard')
+addedToCard.classList.add('d-none')
 let mealsCart = []
 // const singleMealDetails = document.getElementById('singleMealDetails')
 
@@ -112,6 +114,7 @@ const singleMealApi = (singleApiData) => {
 
 //Add meals to Array
 const addToCartList = (product) => {
+    addedToCard.classList.remove('d-none')
     getApiData(product).then(data => {
         const singelCardItem = data.meals[0]
 
@@ -119,9 +122,11 @@ const addToCartList = (product) => {
         if (Checkitem == -1) {
             singelCardItem.quantity = 1
             mealsCart.push(singelCardItem)
+            addedToCard.classList.add('d-none')
         }
         else {
             mealsCart[Checkitem].quantity = mealsCart[Checkitem].quantity + 1
+            addedToCard.classList.add('d-none')
         }
         mealsCartCount.innerText = mealsCart.length
     })
