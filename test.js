@@ -76,11 +76,45 @@ console.log(mealsCart) */
  */
 
 
-a = [
+/* a = [
     { prop1: "abc", prop2: "qwe" },
     { prop1: "bnmb", prop2: "yutu" },
     { prop1: "zxvz", prop2: "qwrq" }];
 
 index = a.findIndex(x => x.prop2 === "qwrq");
 a[index].prop2 = a[index].prop2 + 'ddd'
-console.log(a);
+console.log(a); */
+
+
+
+/* if (data.meals[0][ing] != '' || data.meals[0][ing] == null) {
+    const ingMeaObje = { [ing]: data.meals[0][ing], [mea]: data.meals[0][mea] }
+    listOfIngMea.push(ingMeaObje)
+    console.log(ingMeaObje)
+}
+else {
+    continue;
+}
+ */
+
+
+
+/* const listOfIngMea = []
+for (let i = 1; i <= 20; i++) {
+    const ing = 'strIngredient' + i
+    const mea = 'strMeasure' + i
+
+    if (data.meals[0][ing]) {
+        const ingMeaObje = { [ing]: data.meals[0][ing], [mea]: data.meals[0][mea] }
+        listOfIngMea.push(ingMeaObje)
+        console.log(ingMeaObje)
+    }
+    else {
+        continue;
+    }
+}
+console.log(listOfIngMea) */
+
+let ab = `ss `
+let ac = ab + `con`
+console.log(ac)

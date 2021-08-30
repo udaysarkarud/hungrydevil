@@ -70,6 +70,24 @@ const singleMealApi = (singleApiData) => {
     singleMealDetails.textContent = ''
     getApiData(singleApiData).then(data => {
         const { idMeal, strMeal, strInstructions, strMealThumb, strCategory, strArea } = data.meals[0]
+
+        // Dynamicly control Ingredient and Measure
+        let listOfIngMea = ``
+        for (let i = 1; i <= 20; i++) {
+            const ing = 'strIngredient' + i
+            const mea = 'strMeasure' + i
+
+            if (data.meals[0][ing]) {
+                const ingMeaObje = `<li class="list-group-item">(${i}) ${data.meals[0][ing]} : ${data.meals[0][mea]}</li>`
+                // const ingMeaObje = { [ing]: data.meals[0][ing], [mea]: data.meals[0][mea] }
+                // listOfIngMea.push(ingMeaObje)
+                listOfIngMea = listOfIngMea.concat(ingMeaObje)
+            }
+            else {
+                continue;
+            }
+        }
+
         const singleDetailsCard = document.createElement('div')
         singleDetailsCard.classList.add('card')
         singleDetailsCard.innerHTML = `
@@ -79,9 +97,7 @@ const singleMealApi = (singleApiData) => {
                 <p class="card-text">${strInstructions.slice(0, 200)}</p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">An item</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
+               ${listOfIngMea}
             </ul>
             <div class="card-body">
                 <p>Category: ${strCategory} / Area: ${strMeal}</p>
