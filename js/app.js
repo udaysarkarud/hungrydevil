@@ -6,8 +6,10 @@ const mealsIteamList = document.getElementById('mealsIteamList')
 const mealsCartCount = document.getElementById('mealsCartCount')
 const addedToCard = document.getElementById('addedToCard')
 addedToCard.classList.add('d-none')
+const oldLocalDdata = JSON.parse(localStorage.getItem('allProducts'))
 let mealsCart = []
-// const singleMealDetails = document.getElementById('singleMealDetails')
+oldLocalDdata ? mealsCart = [...oldLocalDdata] : mealsCart = []
+
 
 //Fetch Data From Api
 const getApiData = async (apiLink) => {
@@ -22,6 +24,7 @@ const defaultShow = () => {
     getApiData(`https://www.themealdb.com/api/json/v1/1/search.php?s= `).then(data => {
         genarelData(data)
     })
+    mealsCartCount.innerText = mealsCart.length
 }
 
 //Button with Text Lenth Verify
@@ -135,21 +138,30 @@ const addToCartList = (product) => {
         if (Checkitem == -1) {
             singelCardItem.quantity = 1
             mealsCart.push(singelCardItem)
+            addtoLocal()
             addedToCard.classList.add('d-none')
         }
         else {
             mealsCart[Checkitem].quantity = mealsCart[Checkitem].quantity + 1
+            addtoLocal()
             addedToCard.classList.add('d-none')
         }
+
         mealsCartCount.innerText = mealsCart.length
     })
 
+    //
 
 }
-
+//local storage
+const addtoLocal = () => {
+    localStorage.setItem('allProducts', JSON.stringify(mealsCart))
+}
 //Show Array Data
 document.getElementById('viewCartList').addEventListener('click', () => {
+
     mealsIteamList.textContent = ''
+
     mealsCart.forEach(element => {
         const { idMeal, strMeal, strInstructions, strMealThumb, strCategory, strArea, quantity } = element
         const createIteam = document.createElement('div')
@@ -174,3 +186,8 @@ document.getElementById('viewCartList').addEventListener('click', () => {
 })
 
 defaultShow()
+
+document.getElementById('clearLocal').addEventListener('click', () => {
+    localStorage.removeItem('allProducts');
+    location.reload();
+})
